@@ -1,0 +1,47 @@
+# NeuroCore AI — .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment secrets
+.env
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# ChromaDB vector store
+chroma_store/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Frontend
+node_modules/
+dist/
+.cache/
+
+# Logs
+*.log

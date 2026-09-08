@@ -1,0 +1,1 @@
+# NeuroCore AI — app package
