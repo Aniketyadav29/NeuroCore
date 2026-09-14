@@ -1,0 +1,1 @@
+# NeuroCore AI — RAG module

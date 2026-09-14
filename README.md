@@ -25,7 +25,7 @@ NeuroCore AI is a unified corporate intelligence platform that integrates **HR, 
 | Database | SQLite + SQLAlchemy ORM |
 | Vector Store | ChromaDB |
 | LLM | Google Gemini / OpenAI / Groq / Offline fallback |
-| Frontend | React + Vite |
+| Frontend | React 19 + Vite 8 |
 
 ---
 
@@ -35,45 +35,78 @@ NeuroCore AI is a unified corporate intelligence platform that integrates **HR, 
 NeuroCore/
 ├── backend/
 │   ├── app/
-│   │   ├── config.py        # Pydantic settings
-│   │   ├── database.py      # SQLAlchemy engine & session
-│   │   └── models.py        # ORM models (HR, Sales, Finance, Support, Automation, Audit)
-│   ├── main.py              # FastAPI entry point
-│   ├── seed_data.py         # Mock data generator (98 correlated records)
-│   ├── requirements.txt     # Python dependencies
-│   └── .env.example         # Environment variable template
-└── frontend/                # React + Vite (Phase 4)
+│   │   ├── automation/       # Rule engine + audit log creation
+│   │   ├── rag/              # ChromaDB indexing, LLM service, vector store
+│   │   ├── routers/          # FastAPI routes (chat, dashboard, automation)
+│   │   ├── config.py         # Pydantic settings
+│   │   ├── database.py       # SQLAlchemy engine & session
+│   │   └── models.py         # ORM models (HR, Sales, Finance, Support, Automation, Audit)
+│   ├── main.py               # FastAPI entry point
+│   ├── seed_data.py          # Mock data generator (98 correlated records)
+│   ├── requirements.txt      # Python dependencies
+│   └── .env.example          # Environment variable template
+└── frontend/
+    ├── src/
+    │   ├── components/       # Sidebar, KpiCard
+    │   ├── pages/            # Dashboard, Chat, Automation, Audit
+    │   ├── api.js            # Centralized API client
+    │   └── index.css         # Design system (dark glassmorphism)
+    └── vite.config.js        # Vite + dev proxy config
 ```
 
 ---
 
 ## Quick Start
 
-### Backend
+### 1. Backend
 
 ```bash
 cd backend
 
-# 1. Create virtual environment
+# Create virtual environment
 python -m venv venv
 .\venv\Scripts\activate        # Windows
 # source venv/bin/activate     # Mac/Linux
 
-# 2. Install dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 3. Configure environment
-cp .env.example .env
+# Configure environment
+copy .env.example .env
 # Edit .env — set LLM_PROVIDER=offline to run without API keys
 
-# 4. Seed the database
+# Seed the database with 98 cross-correlated mock records
 python seed_data.py
 
-# 5. Start the server
+# Start the FastAPI server
 uvicorn main:app --reload --port 8000
 ```
 
-Visit: http://localhost:8000/docs for the interactive API explorer.
+Visit **http://localhost:8000/docs** for the interactive API explorer.
+
+### 2. Frontend
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the dev server (Vite proxy forwards /api/* to :8000)
+npm run dev
+```
+
+Visit **http://localhost:5173** to open the app.
+
+---
+
+## First Run (after seeding)
+
+1. Navigate to **AI Intelligence Chat** → click **🔄 Reindex Database**
+2. Ask a cross-department question (e.g. *"Why did support tickets spike after the Q1 launch?"*)
+3. Navigate to **Automation Center** → click **▶ Run Rule Evaluation**
+4. Approve or reject the pending actions that appear
+5. Check the **Audit Trail** for the full history
 
 ---
 
@@ -98,15 +131,17 @@ Ask the AI: *"Why did customer complaints increase after the Q1 product launch?"
 | `DATABASE_URL` | SQLite connection string | `sqlite:///./neurocore.db` |
 | `CHROMA_PERSIST_DIR` | ChromaDB storage path | `./chroma_store` |
 
+The offline LLM provider works **without any API keys** using a built-in keyword-based synthesizer over retrieved context.
+
 ---
 
 ## Build Phases
 
-- [x] **Phase 1** — Foundation: Project structure, DB models, mock data seed
-- [ ] **Phase 2** — RAG Engine: ChromaDB indexing, cross-department semantic search, LLM citations
-- [ ] **Phase 3** — Automation Engine: Rule evaluator, approval workflows, audit logging
-- [ ] **Phase 4** — Frontend: React dashboard, chat UI, approval center, audit timeline
-- [ ] **Phase 5** — Integration & Documentation
+- [x] **Phase 1** — Foundation: Project structure, DB models, mock data seed (98 records)
+- [x] **Phase 2** — RAG Engine: ChromaDB indexing, cross-department semantic search, LLM citations
+- [x] **Phase 3** — Automation Engine: Rule evaluator, approval workflows, audit logging
+- [x] **Phase 4** — Frontend: React dashboard, chat UI, approval center, audit timeline
+- [x] **Phase 5** — Integration & Polish: Vite proxy, live backend status, responsive design, documentation
 
 ---
 
